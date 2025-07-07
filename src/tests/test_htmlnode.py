@@ -1,10 +1,10 @@
 import unittest
 
-from htmlnode import HTMLNode
+from src.htmlnode import HTMLNode
 
 PROPS_STRING = 'href="hello" target="world"'
 PROPS = {"href": "hello", "target": "world"}
-TAG = "<a"
+TAG = "a"
 VALUE = "Hello World"
 CHILDREN = [HTMLNode(), HTMLNode()]
 
