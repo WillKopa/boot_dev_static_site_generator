@@ -30,7 +30,7 @@ def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
     
     return LeafNode(tag=tag, value=text_node.text, props=props)
 
-def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType):
+def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType) -> list[TextNode]:
     new_nodes = []
     for old_node in old_nodes:
         if old_node.text_type == TextType.TEXT:
@@ -45,6 +45,40 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: 
                 else:
                     new_nodes.append(TextNode(text, text_type=TextType.TEXT))
 
+    return new_nodes
+
+def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
+    new_nodes = []
+    for old_node in old_nodes:
+        images = extract_markdown_images(old_node.text)
+        if len(images) == 0:
+            new_nodes.append(old_node)
+        else:
+            text = old_node.text
+            for tpl in images:
+                new_text, text = text.split(f"![{tpl[0]}]({tpl[1]})", 1)
+                new_nodes.append(TextNode(new_text, TextType.TEXT))
+                new_nodes.append(TextNode(tpl[0], TextType.IMAGE, url=tpl[1]))
+            if len(text) > 0:
+                new_nodes.append(TextNode(text, TextType.TEXT))
+    return new_nodes
+
+
+
+def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
+    new_nodes = []
+    for old_node in old_nodes:
+        images = extract_markdown_links(old_node.text)
+        if len(images) == 0:
+            new_nodes.append(old_node)
+        else:
+            text = old_node.text
+            for tpl in images:
+                new_text, text = text.split(f"[{tpl[0]}]({tpl[1]})", 1)
+                new_nodes.append(TextNode(new_text, TextType.TEXT))
+                new_nodes.append(TextNode(tpl[0], TextType.LINK, url=tpl[1]))
+            if len(text) > 0:
+                new_nodes.append(TextNode(text, TextType.TEXT))
     return new_nodes
 
 def extract_markdown_images(text: str) -> list[tuple]:
