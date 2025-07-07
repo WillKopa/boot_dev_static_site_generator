@@ -1,6 +1,6 @@
 import unittest
 
-from src.helpers import text_node_to_html_node, split_nodes_delimiter
+from src.helpers import text_node_to_html_node, split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 from src.textnode import TextNode, TextType
 
 PROPS_STRING = 'href="hello" target="world"'
@@ -118,7 +118,31 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         
         self.assertEqual(str(context.exception), f"No closing {DELIMITER_CODE} found in {TEXT_MISSING_DELIMITER}")
 
-    
+MATCH_1_TEXT = "rick roll"
+MATCH_1_SRC = "https://i.imgur.com/aKaOqIh.gif"
+MATCH_2_TEXT = "obi wan"
+MATCH_2_SRC = "https://i.imgur.com/fJRm4Vk.jpeg"
+IMAGE_TEXT_WITH_MATCH = f"This is text with a ![{MATCH_1_TEXT}]({MATCH_1_SRC}) and ![{MATCH_2_TEXT}]({MATCH_2_SRC})"
+LINK_TEXT_WITH_MATCH = f"This is text with a [{MATCH_1_TEXT}]({MATCH_1_SRC}) and [{MATCH_2_TEXT}]({MATCH_2_SRC})"
+class TestExtractMarkDownImages(unittest.TestCase):
+    def test_extract_markdown_images(self):
+        expected_result = [(MATCH_1_TEXT, MATCH_1_SRC), (MATCH_2_TEXT, MATCH_2_SRC)]
+        result = extract_markdown_images(IMAGE_TEXT_WITH_MATCH)
+        self.assertEqual(result, expected_result)
+
+    def test_extract_does_not_extract_links(self):
+        result = extract_markdown_images(LINK_TEXT_WITH_MATCH)
+        self.assertEqual(len(result), 0)
+
+class TestExtractMarkdownLinks(unittest.TestCase):
+    def test_extract_markdown_links(self):
+        expected_result = [(MATCH_1_TEXT, MATCH_1_SRC), (MATCH_2_TEXT, MATCH_2_SRC)]
+        result = extract_markdown_links(LINK_TEXT_WITH_MATCH)
+        self.assertEqual(result, expected_result)
+
+    def test_extract_does_not_extract_images(self):
+        result = extract_markdown_links(IMAGE_TEXT_WITH_MATCH)
+        self.assertEqual(len(result), 0)
 
 if __name__ == "__main__":
     unittest.main()
