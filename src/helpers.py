@@ -33,12 +33,12 @@ def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
 def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType) -> list[TextNode]:
     new_nodes = []
     for old_node in old_nodes:
-        if old_node.text_type == TextType.TEXT:
+        split_text = old_node.text.split(delimiter)
+        if len(split_text) == 1:
             new_nodes.append(old_node)
+        elif len(split_text) % 2 == 0:
+            raise Exception(f"No closing {delimiter} found in {old_node.text}")
         else:
-            split_text = old_node.text.split(delimiter)
-            if len(split_text) % 2 == 0:
-                raise Exception(f"No closing {delimiter} found in {old_node.text}")
             for idx, text in enumerate(split_text):
                 if idx % 2 == 1:
                     new_nodes.append(TextNode(text, text_type=text_type, url=old_node.url))
@@ -80,6 +80,16 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
             if len(text) > 0:
                 new_nodes.append(TextNode(text, TextType.TEXT))
     return new_nodes
+
+def text_to_textnodes(text: str) -> list[TextNode]:
+    nodes = []
+    nodes = split_nodes_delimiter([TextNode(text, TextType.TEXT)], "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
+
 
 def extract_markdown_images(text: str) -> list[tuple]:
     pattern = r"!\[(.*?)\]\((.*?)\)"

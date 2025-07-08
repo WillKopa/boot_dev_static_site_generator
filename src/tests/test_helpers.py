@@ -6,7 +6,8 @@ from src.helpers import (
     extract_markdown_images, 
     extract_markdown_links, 
     split_nodes_image, 
-    split_nodes_link
+    split_nodes_link,
+    text_to_textnodes
 )
 from src.textnode import TextNode, TextType
 
@@ -67,9 +68,9 @@ TEXT_ONLY = "This is a text node"
 TEXT_MISSING_DELIMITER = "This is `missing a delimiter"
 TEXT_WITH_DELIMITERS = "This `code block` has proper delimiters"
 TEXT_WITH_MORE_DELIMITERS = "This `code block` has even `more` delimiters"
-NODE_WITH_MORE_DELIMITERS = TextNode(TEXT_WITH_MORE_DELIMITERS, TextType.CODE)
-NODE_MISSING_DELIMITER = TextNode(TEXT_MISSING_DELIMITER, TextType.CODE)
-NODE_WITH_DELIMITERS = TextNode(TEXT_WITH_DELIMITERS, TextType.CODE)
+NODE_WITH_MORE_DELIMITERS = TextNode(TEXT_WITH_MORE_DELIMITERS, TextType.TEXT)
+NODE_MISSING_DELIMITER = TextNode(TEXT_MISSING_DELIMITER, TextType.TEXT)
+NODE_WITH_DELIMITERS = TextNode(TEXT_WITH_DELIMITERS, TextType.TEXT)
 NODE_TEXT_ONLY = TextNode(TEXT_ONLY, TextType.TEXT)
 LIST_SINGLE_CODE_NODE = [NODE_WITH_DELIMITERS]
 LIST_SINGLE_CODE_WITH_MORE_DELIMITERS_NODE = [NODE_WITH_MORE_DELIMITERS]
@@ -190,6 +191,24 @@ class TestSplitNodesLink(unittest.TestCase):
             ],
             new_nodes,
         )
+
+class TestTestTextToTextNodes(unittest.TestCase):
+    def test_text_to_text_nodes(self):
+        text ="This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        expected_result = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" with an ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" word and a ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+        ]
+        result = text_to_textnodes(text)
+        self.assertEqual(result, expected_result)
 
 
 if __name__ == "__main__":
