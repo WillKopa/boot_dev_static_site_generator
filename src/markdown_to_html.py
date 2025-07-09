@@ -1,11 +1,11 @@
 import re
 
-from src.block_enum import BlockType
-from src.htmlnode import HTMLNode
-from src.parentnode import ParentNode
-from src.markdown_block_helpers import markdown_to_blocks, block_to_block_type
-from src.helpers import text_to_textnodes, text_node_to_html_node, split_nodes_delimiter
-from src.textnode import TextNode, TextType
+from block_enum import BlockType
+from htmlnode import HTMLNode
+from parentnode import ParentNode
+from markdown_block_helpers import markdown_to_blocks, block_to_block_type
+from helpers import text_to_textnodes, text_node_to_html_node, split_nodes_delimiter
+from textnode import TextNode, TextType
 
 def markdown_to_html_node(markdown: str) -> HTMLNode:
     child_list = []
