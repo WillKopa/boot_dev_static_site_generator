@@ -58,12 +58,14 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
         if len(images) == 0:
             new_nodes.append(old_node)
             continue
-        text = old_node.text
+        old_text = old_node.text
         for image_tpl in images:
-            new_text, text = text.split(f"![{image_tpl[0]}]({image_tpl[1]})", 1)
-            if len(new_text) > 0:
+            new_text, old_text = old_text.split(f"![{image_tpl[0]}]({image_tpl[1]})", 1)
+            if new_text != "":
                 new_nodes.append(TextNode(new_text, TextType.TEXT))
             new_nodes.append(TextNode(image_tpl[0], TextType.IMAGE, url=image_tpl[1]))
+        if old_text != "":
+            new_nodes.append(TextNode(old_text, TextType.TEXT))
     return new_nodes
 
 
