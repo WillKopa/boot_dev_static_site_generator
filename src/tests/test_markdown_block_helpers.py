@@ -61,8 +61,8 @@ This is the same paragraph on a new line
         result = markdown_to_blocks(md)
         self.assertEqual(result, [])
 
-class TestBlockToBlock(unittest.TestCase):
-    def test_block_to_block_heading(self):
+class TestBlockToBlockType(unittest.TestCase):
+    def test_block_to_block_type_heading(self):
         heading_text = " Heading Text"
         heading_block_1 = "# Heading Text"
         heading_block_6 = "#" * 6 + heading_text
@@ -71,18 +71,25 @@ class TestBlockToBlock(unittest.TestCase):
         self.assertEqual(block_to_block_type(heading_block_6), BlockType.HEADING)
         self.assertEqual(block_to_block_type(heading_block_7), BlockType.PARAGRAPH)
 
-    def test_block_to_block_code(self):
+    def test_block_to_block_type_code(self):
         code_text = "```Code Block```"
+        big_code_block = """```
+code
+block
+here
+```
+"""
         not_code_text_1 = "```Not Code Block"
         not_code_text_2 = "`Not Code Block```"
         not_code_text_3 = "``Not Code Block``"
 
         self.assertEqual(block_to_block_type(code_text), BlockType.CODE)
+        self.assertEqual(block_to_block_type(big_code_block), BlockType.CODE)
         self.assertEqual(block_to_block_type(not_code_text_1), BlockType.PARAGRAPH)
         self.assertEqual(block_to_block_type(not_code_text_2), BlockType.PARAGRAPH)
         self.assertEqual(block_to_block_type(not_code_text_3), BlockType.PARAGRAPH)
 
-    def test_block_to_block_quote(self):
+    def test_block_to_block_type_quote(self):
         quote_text = """>Quote 0
 >Quote 1
 > Quote 2
@@ -97,7 +104,7 @@ Not a quote
         self.assertEqual(block_to_block_type(quote_text), BlockType.QUOTE)
         self.assertEqual(block_to_block_type(invalid_quote), BlockType.PARAGRAPH)
 
-    def test_block_to_block_ul(self):
+    def test_block_to_block_type_ul(self):
         ul_text = """- step 1
 - step2
 -  step 3
@@ -109,7 +116,7 @@ not a step
         self.assertEqual(block_to_block_type(ul_text), BlockType.UNORDERED_LIST)
         self.assertEqual(block_to_block_type(not_ul_text), BlockType.PARAGRAPH)
 
-    def test_block_to_block_ol(self):
+    def test_block_to_block_type_ol(self):
         ol_text = """1. step 1
 2. step 2
 3. step 3
