@@ -1,18 +1,18 @@
 import os
 import shutil
 
-PUBLIC_PATH = os.path.join(os.path.dirname(__file__), "../public")
+DOCS_PATH = os.path.join(os.path.dirname(__file__), "../docs")
 STATIC_PATH = os.path.join(os.path.dirname(__file__), "../static")
 
-def copy_static_to_public():
+def copy_static_to_docs():
     recreate_public_directory()
-    create_sub_directories(STATIC_PATH, PUBLIC_PATH)
+    create_sub_directories(STATIC_PATH, DOCS_PATH)
     
 
 def recreate_public_directory():
-    if os.path.exists(PUBLIC_PATH):
-        shutil.rmtree(PUBLIC_PATH)
-    os.mkdir(PUBLIC_PATH)
+    if os.path.exists(DOCS_PATH):
+        shutil.rmtree(DOCS_PATH)
+    os.mkdir(DOCS_PATH)
 
 def create_sub_directories(parent_static_directory, parent_public_directory):
     sub_directories = os.listdir(parent_static_directory)
