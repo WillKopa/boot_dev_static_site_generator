@@ -1,5 +1,5 @@
-from copy_static_to_public import copy_static_to_public
-from generate_page import generate_page
+from src.copy_static_to_public import copy_static_to_public
+from src.generate_page import generate_page
 
 CONTENT_SOURCE = "content/index.md"
 DESTINATION_PATH = "public/index.html"

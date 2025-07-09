@@ -1,7 +1,7 @@
 import re
 
-from block_enum import BlockType
-from htmlnode import HTMLNode
+from src.block_enum import BlockType
+from src.htmlnode import HTMLNode
 
 def markdown_to_blocks(markdown: str) -> list[str]:
     """

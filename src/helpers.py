@@ -1,8 +1,8 @@
 import re
 
-from textnode import TextNode, TextType
-from htmlnode import HTMLNode
-from leafnode import LeafNode
+from src.textnode import TextNode, TextType
+from src.htmlnode import HTMLNode
+from src.leafnode import LeafNode
 
 def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
     if text_node.text_type not in TextType:
