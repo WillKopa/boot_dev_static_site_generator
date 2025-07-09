@@ -9,7 +9,7 @@ DESTINATION_PATH = "docs"
 TEMPLATE_SOURCE = "template.html"
 
 def main():
-    base_path = sys.argv[0] if sys.argv[0] else "/"
+    base_path = sys.argv[1] if sys.argv[1] else "/"
     copy_static_to_docs()
     generate_pages(HOME_SOURCE, TEMPLATE_SOURCE, DESTINATION_PATH, base_path)
 
