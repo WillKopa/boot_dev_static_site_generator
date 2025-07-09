@@ -59,11 +59,11 @@ def paragraph_to_html(block: str)-> HTMLNode:
 def heading_to_html(block: str) -> HTMLNode:
     head_level = 0
     for ch in block:
-        if ch is "#":
+        if ch == "#":
             head_level += 1
         else:
             break
-    children = text_to_child_nodes(block.lstrip("#"))
+    children = text_to_child_nodes(block.lstrip("#").strip())
     return ParentNode(f"h{head_level}", children)
 
 def quote_to_html(block: str) -> HTMLNode:
