@@ -11,17 +11,9 @@ class ParentNode(HTMLNode):
         if self.children == None:
             raise ValueError("ParentNode must have children")
         
-        html = f"<{self.tag}"
-
-        if self.props:
-            for key in self.props.keys():
-                html += f' {key}="{self.props[key]}"'
-        
-        html += ">"
+        children_html = ""
 
         for child in self.children:
-            html += child.to_html()
+            children_html += child.to_html()
 
-        html += f"</{self.tag}>"
-
-        return html
+        return f"<{self.tag}{self.props_to_html()}>{children_html}</{self.tag}>"

@@ -65,9 +65,9 @@ class TestTextNodeToHTMLNode(unittest.TestCase):
         self.assertEqual(str(context.exception), "Invalid TextNode type")
 
 TEXT_ONLY = "This is a text node"
-TEXT_MISSING_DELIMITER = "This is `missing a delimiter"
-TEXT_WITH_DELIMITERS = "This `code block` has proper delimiters"
-TEXT_WITH_MORE_DELIMITERS = "This `code block` has even `more` delimiters"
+TEXT_MISSING_DELIMITER = "This is ```missing a delimiter"
+TEXT_WITH_DELIMITERS = "This ```code block``` has proper delimiters"
+TEXT_WITH_MORE_DELIMITERS = "This ```code block``` has even ```more``` delimiters"
 NODE_WITH_MORE_DELIMITERS = TextNode(TEXT_WITH_MORE_DELIMITERS, TextType.TEXT)
 NODE_MISSING_DELIMITER = TextNode(TEXT_MISSING_DELIMITER, TextType.TEXT)
 NODE_WITH_DELIMITERS = TextNode(TEXT_WITH_DELIMITERS, TextType.TEXT)
@@ -91,7 +91,7 @@ EXPECTED_MORE_DELIMITERS_SPLIT = [
             ]
 EXPECTED_MIXED_RESULT = EXPECTED_DELIMITER_SPLIT + [NODE_TEXT_ONLY] + EXPECTED_MORE_DELIMITERS_SPLIT
 
-DELIMITER_CODE = "`"
+DELIMITER_CODE = "```"
 
 class TestSplitNodesDelimiter(unittest.TestCase):
     def test_split_with_only_text(self):
@@ -192,9 +192,9 @@ class TestSplitNodesLink(unittest.TestCase):
             new_nodes,
         )
 
-class TestTestTextToTextNodes(unittest.TestCase):
+class TestTextToTextNodes(unittest.TestCase):
     def test_text_to_text_nodes(self):
-        text ="This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        text ="This is **text** with an _italic_ word and a ```code block``` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
         expected_result = [
             TextNode("This is ", TextType.TEXT),
             TextNode("text", TextType.BOLD),

@@ -1,9 +1,9 @@
 from enum import Enum
 
 class BlockType(Enum):
-    PARAGRAPH = "PARAGRAPH"
-    HEADING = "HEADING"
-    CODE = "CODE"
-    QUOTE = "QUOTE"
-    UNORDERED_LIST = "UNORDERED_LIST"
-    ORDERED_LIST = "ORDERED_LIST"
+    PARAGRAPH = "p"
+    HEADING = "h"
+    CODE = "code"
+    QUOTE = "blockquote"
+    UNORDERED_LIST = "ul"
+    ORDERED_LIST = "ol"

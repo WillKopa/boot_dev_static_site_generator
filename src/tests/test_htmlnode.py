@@ -2,7 +2,7 @@ import unittest
 
 from src.htmlnode import HTMLNode
 
-PROPS_STRING = 'href="hello" target="world"'
+PROPS_STRING = ' href="hello" target="world"'
 PROPS = {"href": "hello", "target": "world"}
 TAG = "a"
 VALUE = "Hello World"

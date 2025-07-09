@@ -6,17 +6,11 @@ class LeafNode(HTMLNode):
 
     def to_html(self) -> str:
         if self.value == None:
-            raise ValueError("LeadNode must have value")
+            raise ValueError("LeafNode must have value set")
         
         if self.tag == None:
             return self.value
         
-        html = f"<{self.tag}"
-        
-        if self.props:
-            for key in self.props.keys():
-                html += f' {key}="{self.props[key]}"'
-
-        html += f">{self.value}</{self.tag}>"
+        html = f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
         
         return html
