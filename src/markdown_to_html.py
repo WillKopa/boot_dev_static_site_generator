@@ -76,7 +76,7 @@ def quote_to_html(block: str) -> HTMLNode:
 def unordered_list_to_html(block):
     children = []
     for line in block.split("\n"):
-        text = line.lstrip("- ").lstrip("* ")
+        text = line.lstrip("- ")
         child_node = text_to_child_nodes(text)
         children.append(ParentNode("li", child_node))
     return ParentNode("ul", children)
