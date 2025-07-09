@@ -1,3 +1,6 @@
+import os
+import shutil
+
 from src.markdown_to_html import markdown_to_html_node
 from src.extract_title import extract_title
 
@@ -15,3 +18,15 @@ def generate_page(from_path, template_path, dest_path):
 
     with open(dest_path, "w") as file:
         file.write(filled_template)
+
+def generate_pages(source_directory, template_path, destination_directory):
+    sub_directories = os.listdir(source_directory)
+    for sub in sub_directories:
+        sub_source_path = os.path.join(source_directory, sub)
+        sub_destination_path = os.path.join(destination_directory, sub)
+        if os.path.isfile(sub_source_path):
+            if (sub_source_path.endswith(".md")):
+                generate_page(sub_source_path, template_path, sub_destination_path.rstrip(".md") + ".html")
+        else:
+            os.mkdir(sub_destination_path)
+            generate_pages(sub_source_path, template_path, sub_destination_path)
