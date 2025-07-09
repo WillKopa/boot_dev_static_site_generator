@@ -72,22 +72,27 @@ class TestBlockToBlockType(unittest.TestCase):
         self.assertEqual(block_to_block_type(heading_block_7), BlockType.PARAGRAPH)
 
     def test_block_to_block_type_code(self):
+        blocks_expected_type = []
         code_text = "```Code Block```"
-        big_code_block = """```
+        blocks_expected_type.append((markdown_to_blocks(code_text), BlockType.CODE))
+        big_code_text = """
+```
 code
 block
 here
 ```
 """
+        blocks_expected_type.append((markdown_to_blocks(big_code_text), BlockType.CODE))
         not_code_text_1 = "```Not Code Block"
+        blocks_expected_type.append((markdown_to_blocks(not_code_text_1), BlockType.PARAGRAPH))
         not_code_text_2 = "`Not Code Block```"
+        blocks_expected_type.append((markdown_to_blocks(not_code_text_2), BlockType.PARAGRAPH))
         not_code_text_3 = "``Not Code Block``"
+        blocks_expected_type.append((markdown_to_blocks(not_code_text_3), BlockType.PARAGRAPH))
 
-        self.assertEqual(block_to_block_type(code_text), BlockType.CODE)
-        self.assertEqual(block_to_block_type(big_code_block), BlockType.CODE)
-        self.assertEqual(block_to_block_type(not_code_text_1), BlockType.PARAGRAPH)
-        self.assertEqual(block_to_block_type(not_code_text_2), BlockType.PARAGRAPH)
-        self.assertEqual(block_to_block_type(not_code_text_3), BlockType.PARAGRAPH)
+        for block_tpl in blocks_expected_type:
+            for block in block_tpl[0]:
+                self.assertEqual(block_to_block_type(block), block_tpl[1])
 
     def test_block_to_block_type_quote(self):
         quote_text = """>Quote 0
